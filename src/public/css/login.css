@@ -1,0 +1,135 @@
+
+/* Estilo básico para el formulario de login */
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(232, 235, 233);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: rgb(60, 60, 60);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555555;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+.login-container p {
+    margin-top: 20px;
+    color: #777777;
+}
+
+.login-container a {
+    color: rgb(48, 89, 79);
+    text-decoration: none;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+
+/* header */
+
+.colornuevo {
+    background-color: rgb(48, 89, 79);
+    }
+  
+    .cabecera {
+      justify-content: flex-end;
+      background-color: transparent;
+      font-size: large;
+      color: rgb(232, 235, 233);
+    }
+  
+    .botoncabecera {
+      border: solid white 3px;
+    }
+    
+    .he {
+      padding: 3px;
+      margin: 3px;
+    }
+    
+    .he:hover {
+      background-color: white;
+      color: black;
+    }
+    
+    .he2 {
+      border: solid white 1px;
+    }
+    
+    .bhn {
+      border: solid black 2px;
+    }
+  
+  .ff{
+      display: flex;
+      justify-content: center;
+  }
+  
+  
+  
+  
+    /* footer */
+    .footerText {
+      text-decoration: none;
+      background-color: rgb(48, 89, 79);
+      color: rgb(232, 235, 233);
+      text-align: center;
+      transition: all 0.5s;
+    }
+    
+    .footerText:hover {
+      transform: scale(1.1);
+      color:rgb(232, 235, 233);
+    }
+    
+    footer {
+      margin-top: 20px;
+      background-color: rgb(48, 89, 79);
+      color: rgb(232, 235, 233);
+      text-align: center;
+    }
+    
+    .links {
+      font-size: 30px;
+      justify-content: center;
+    }
+    
+    .pp {
+      font-size: 20px;
+    }
+  
+    .ppo {
+      font-size: 10px;
+    }
