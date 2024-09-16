@@ -74,7 +74,7 @@ export const isAdmin = async (req, res, next) => {
             const [rows] = await pool.query('SELECT * FROM usuarios WHERE idusuario = ?', [decoded.id])
             let user = rows[0];
                 if (user.rol != 1) {
-                    return res.status(401).redirect('/index');
+                    return res.status(401).redirect('/');
                 }
                 req.user = rows[0];
                 return next();
