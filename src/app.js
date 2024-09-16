@@ -6,7 +6,7 @@ import  session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 import jwt from "jsonwebtoken";
-// import {promisify} from "util";
+
 
 
 const app = express();

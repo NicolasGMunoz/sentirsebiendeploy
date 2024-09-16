@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +18,6 @@
   <!--Style-->
   <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
   <header class="container-fluid colornuevo">
     <nav class="navbar navbar-expand-lg transparent">
@@ -33,7 +31,7 @@
         <div class="collapse navbar-collapse cabecera" id="navbarNavDropdown">
           <ul class="navbar-nav cabecera">
             <li class="nav-item">
-              <a class="nav-link cabecera he he2" href="./">Inicio</a>
+              <a class="nav-link cabecera he" href="./">Inicio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link cabecera he" href="./services">Servicios</a>
@@ -51,7 +49,7 @@
               <a class="nav-link cabecera he" href="./login">Inicia Sesión</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cabecera he" href="./turnos">Turnos</a>
+              <a class="nav-link cabecera he he2" href="./turnos">Turnos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link cabecera he" href="./turnosCargados">Turnos Agendados</a>
@@ -62,66 +60,36 @@
     </nav>
   </header>
 
+  <h1 class="text-center">Agendar un Servicio</h1>
+  <form id="turnos">
+    <label for="fecha">Fecha:</label>
+    <input type="date" id="fecha" name="fecha" required><br><br>
 
-  <section class="contenedor-carousel">
-    <div id="carouselExampleCaptions" class="carousel slide">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
-          aria-label="Slide 4"></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <a href="./services"><img src="../ASSETS/imagen1.jpg" class="d-block w-100" alt="servicios"></a>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Servicios</h5>
-            <p>servicios</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <a href="./aboutUs"><img src="../ASSETS/imagen2.png" class="d-block w-100" alt="quienes somos"></a>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Quienes Somos</h5>
-            <p>Descubrenos!</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <a href="./notices"><img src="../ASSETS/imagen3.jpg" class="d-block w-100" alt="noticias"></a>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Noticias</h5>
-            <p>noticias</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <a href="./employedForm"><img src="../ASSETS/imagen4.jpg" class="d-block w-100" alt="Empleo"></a>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Empleo</h5>
-            <p>Mandanos tu cv</p>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </section>
+    <label for="hora">Hora:</label>
+    <input type="time" id="hora" name="hora" required><br><br>
+
+    <label for="servicio">Servicio:</label>
+    <select id="servicio" name="servicio" required>
+      <option value="belleza">Belleza</option>
+      <option value="masaje">Masaje</option>
+      <option value="corporales">Tratamientos Corporales</option>
+      <option value="faciales">Tratamientos Faciales</option>
+    </select><br><br>
+    <label for="profesional">Nombre Profesional:</label>
+    <select id="profesional" name="profesional">
+      <option value="happy">Dra. Felicidad</option>
+      <option value="bigotex">Dr. Manuel</option>
+      <option value="Pablinka">Dr. Pablo</option>
+    </select>
+    <label for="nombre">Nombre Completo:</label>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+
+    <button type="submit"> Agendar Turno</button>
+  </form>
 
 
-
-  <!-- footer -->
-  <footer class="container-fluid">
+ <!-- footer -->
+ <footer class="container-fluid">
     <div class="row">
       <div class="col-lg-9 container-fluid">
         <div class="row">
@@ -145,13 +113,10 @@
       </div>
     </div>
   </footer>
-  <!-- Mi Js -->
-  <script src="/js/index.js"></script>
-  <!-- bootstrap -->
+  <script src="/JS/turnos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
     crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/026c9a0387.js" crossorigin="anonymous"></script>
 </body>
-
 </html>
