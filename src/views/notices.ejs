@@ -85,8 +85,38 @@
     <div id="comentariosContainer"></div>
         <!-- Los comentarios se renderizarán aquí -->
     </div>
-</section>
 
+
+<script>
+    let currentIndex = 0;
+    const carousel = document.getElementById('carousel');
+    const images = carousel.getElementsByTagName('img');
+
+    // Función para mover el carrusel
+    function moveCarousel(direction) {
+        currentIndex += direction;
+
+        if (currentIndex < 0) {
+            currentIndex = images.length - 1; // Ir a la última imagen
+        } else if (currentIndex >= images.length) {
+            currentIndex = 0; // Volver a la primera imagen
+        }
+
+        // Muestra la imagen actual
+        for (let i = 0; i < images.length; i++) {
+            images[i].style.display = 'none'; // Oculta todas las imágenes
+        }
+        images[currentIndex].style.display = 'block'; // Muestra solo la imagen actual
+    }
+
+    // Mueve el carrusel automáticamente cada 3 segundos
+    setInterval(() => {
+        moveCarousel(1);
+    }, 3000); // Cambia el número para ajustar la velocidad (3000 = 3 segundos)
+
+    // Inicialmente, solo muestra la primera imagen
+    moveCarousel(0);
+</script>
     <!-- footer -->
     <footer class="container-fluid">
         <div class="row">  

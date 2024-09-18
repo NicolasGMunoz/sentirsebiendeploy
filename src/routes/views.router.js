@@ -32,7 +32,7 @@ router.get("/login", async (req, res) => {
         try {
             const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
             if(decoded.id){
-                return res.redirect("index");
+                return res.render("index");
             }else{
                 res.render("login");
             }
