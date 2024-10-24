@@ -2,10 +2,9 @@ import express from "express";
 import { __dirname } from "./utils.js"
 import path from "node:path";
 import viewsRouter from "./routes/views.router.js"
-import  session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
-import jwt from "jsonwebtoken";
+
 
 
 

@@ -46,14 +46,16 @@
               <a class="nav-link cabecera he" href="./employedForm">Empleo</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cabecera he" href="./login">Inicia Sesión</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link cabecera he he2" href="./turnos">Turnos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link cabecera he" href="./turnosCargados">Turnos Agendados</a>
             </li>
+            <li class="nav-item">
+              <button class="styleButtonHead">
+                <a class="nav-link cabecera he " href="<%= isAuthenticated ? '/logout' : '/login' %>"><%= isAuthenticated ? 'Cerrar Sesión' : 'Inicia Sesión' %></a>
+            </button>
+            </li> 
           </ul>
         </div>
       </div>
@@ -77,9 +79,9 @@
     </select><br><br>
     <label for="profesional">Nombre Profesional:</label>
     <select id="profesional" name="profesional">
-      <option value="happy">Dra. Felicidad</option>
-      <option value="bigotex">Dr. Manuel</option>
-      <option value="Pablinka">Dr. Pablo</option>
+      <option value="Dra. Ana Felicidad">Dra. Felicidad</option>
+      <option value="Dr. Manuel">Dr. Manuel</option>
+      <option value="Dr. Pablo Sanchez">Dr. Pablo</option>
     </select>
     <label for="nombre">Nombre Completo:</label>
     <input type="text" id="nombre" name="nombre" required><br><br>

@@ -46,16 +46,18 @@
             </li>
             <li class="nav-item">
               <a class="nav-link cabecera he" href="./employedForm">Empleo</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link cabecera he" href="./login">Inicia Sesión</a>
-            </li>
+            </li>           
             <li class="nav-item">
               <a class="nav-link cabecera he" href="./turnos">Turnos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link cabecera he" href="./turnosCargados">Turnos Agendados</a>
             </li>
+            <li class="nav-item">
+              <button class="styleButtonHead">
+                <a class="nav-link cabecera he " href="<%= isAuthenticated ? '/logout' : '/login' %>"><%= isAuthenticated ? 'Cerrar Sesión' : 'Inicia Sesión' %></a>
+            </button>
+            </li> 
           </ul>
         </div>
       </div>
@@ -118,8 +120,8 @@
     </div>
   </section>
 
-
-
+  
+  
   <!-- footer -->
   <footer class="container-fluid">
     <div class="row">

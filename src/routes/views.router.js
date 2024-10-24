@@ -17,37 +17,46 @@ dotenv.config()
 
 
 //index
-router.get('/', async (req, res) => {
-    try {
-        res.render("index");
-    } catch (error) {
-        res.render("index", {error: error.message})
+router.get("/", (req, res) => {
+    const token = req.cookies.jwt;
+    
+    if (token) {
+        res.render("index", { isAuthenticated: true });
+    } else {
+        res.render("index", { isAuthenticated: false });
     }
-})
-
+});
 
 // login
 router.get("/login", async (req, res) => {
-    if(req.cookies.jwt){
-        try {
-            const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
-            if(decoded.id){
-                return res.render("index");
-            }else{
-                res.render("login");
-            }
+    const token = req.cookies.jwt;
     
-        } catch (error) {
-            console.log("error");
-            res.status(500).send("Error interno del servidor"); 
-        }
-    }else{
-        res.render("login");
-            
+    if (token) {
+        res.render("index", { isAuthenticated: true });
+    } else {
+        res.render("login", { isAuthenticated: false });
     }
+    // if(req.cookies.jwt){
+    //     try {
+    //         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO)
+    //         if(decoded.id){
+    //             return res.render("index");
+    //         }else{
+    //             res.render("login");
+    //         }
+    
+    //     } catch (error) {
+    //         console.log("error");
+    //         res.status(500).send("Error interno del servidor"); 
+    //     }
+    // }else{
+    //     res.render("login");
+            
+    // }
     
 
 });
+
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -79,11 +88,31 @@ router.post('/login', async (req, res) => {
     }
 });
 
+//LOGOUT
+router.get('/logout', (req, res) => {
+    // Eliminar la cookie jwt
+    res.cookie('jwt', '', { expires: new Date(0), httpOnly: true });
+    res.send(`
+        <script>
+            alert('Sesión cerrada correctamente');
+            window.location.href = '/login';
+        </script>
+    `);
+    // res.redirect('/login', );  // Redirige al inicio después de cerrar sesión
+});
+
 
 //notices
 router.get("/notices", (req,res) =>{
+    
     try {
-        res.render("notices");
+        const token = req.cookies.jwt;
+    
+        if (token) {
+            res.render("notices", { isAuthenticated: true });
+        } else {
+            res.render("notices", { isAuthenticated: false });
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send("Error interno");        
@@ -109,7 +138,14 @@ router.post('/notices', async(req,res)=>{
 //register
 router.get("/register",(req, res) => {  // Agregué `req` como primer parámetro
     try {
-        res.render("register");
+        const token = req.cookies.jwt;
+    
+        if (token) {
+            res.render("register", { isAuthenticated: true });
+        } else {
+            res.render("register", { isAuthenticated: false });
+        }
+
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  
@@ -139,7 +175,14 @@ router.post("/register", async (req,res) =>{
 // turnos
 router.get("/turnos",isAuthenticated, async (req, res) => {  // Agregué `req` como primer parámetro
     try {
-        await res.render("turnos");  // Corregí la ruta a minúsculas
+        const token = req.cookies.jwt;
+    
+        if (token) {
+            await res.render("turnos", { isAuthenticated: true });
+        } else {
+            await res.render("turnos", { isAuthenticated: false });
+        }
+       
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
@@ -169,7 +212,13 @@ router.post('/turnos', async (req, res) => {
 //aboutUs
   router.get("/aboutUs",(req, res) => {  // Agregué `req` como primer parámetro
     try {
-        res.render("aboutUs");
+        const token = req.cookies.jwt;
+    
+        if (token) {
+             res.render("aboutus", { isAuthenticated: true });
+        } else {
+             res.render("aboutus", { isAuthenticated: false });
+        }
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
@@ -180,7 +229,14 @@ router.post('/turnos', async (req, res) => {
 //employedForm
 router.get("/employedForm",(req, res) => {  // Agregué `req` como primer parámetro
     try {
-        res.render("employedForm");  // Corregí la ruta a minúsculas
+        const token = req.cookies.jwt;
+    
+        if (token) {
+             res.render("employedForm", { isAuthenticated: true });
+        } else {
+             res.render("employedForm", { isAuthenticated: false });
+        }
+
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
@@ -191,7 +247,13 @@ router.get("/employedForm",(req, res) => {  // Agregué `req` como primer parám
 //services
 router.get("/services",(req, res) => {  // Agregué `req` como primer parámetro
     try {
-        res.render("services");   // Corregí la ruta a minúsculas
+        const token = req.cookies.jwt;
+    
+        if (token) {
+             res.render("services", { isAuthenticated: true });
+        } else {
+             res.render("services", { isAuthenticated: false });
+        }
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
@@ -202,11 +264,50 @@ router.get("/services",(req, res) => {  // Agregué `req` como primer parámetro
 //turnosCargados
 router.get("/turnosCargados",isAdmin,(req, res) => {  
     try {
-        
-        res.render("turnosCargados");
+        const token = req.cookies.jwt;
+    
+        if (token) {
+             res.render("turnosCargados", { isAuthenticated: true });
+        } else {
+             res.render("turnosCargados", { isAuthenticated: false });
+        }
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  
     }
 });
+
+
+router.get("/pagos",(req, res) => {  // Agregué `req` como primer parámetro
+    try {
+        const token = req.cookies.jwt;
+    
+        if (token) {
+             res.render("pagos", { isAuthenticated: true });
+        } else {
+             res.render("pagos", { isAuthenticated: false });
+        }
+    } catch (error) {
+        console.log("error");
+        res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
+    }
+});
+
+router.post("/pagos",(req, res) => {  // Agregué `req` como primer parámetro
+    try {
+        const token = req.cookies.jwt;
+    
+        if (token) {
+             res.render("pagos", { isAuthenticated: true });
+        } else {
+             res.render("pagos", { isAuthenticated: false });
+        }
+    } catch (error) {
+        console.log("error");
+        res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
+    }
+});
+
+
+
 export default router

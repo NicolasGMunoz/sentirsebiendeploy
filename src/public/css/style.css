@@ -48,8 +48,14 @@ h1{
     justify-content: center;
 }
 
+.styleButtonHead{
+  color: rgb(232, 235, 233);
+  background-color: rgb(48, 89, 79);
+  all: unset; 
+  display: inline-block; 
+  cursor: pointer; 
 
-
+}
 
   /* footer */
   .footerText {
