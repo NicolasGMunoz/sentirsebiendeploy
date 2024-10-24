@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import {promisify} from "util";
 import { isAuthenticated, isAdmin  } from "../manager/userManager.js";
+import { pool } from "../db/poolConfig.js"; 
 
 const router = Router()
 const userManager = new UserManager();
@@ -265,15 +266,19 @@ router.get("/services",(req, res) => {  // Agregué `req` como primer parámetro
 
 
 //turnosCargados
-router.get("/turnosCargados",isAdmin,(req, res) => {  
-    try {
-        const token = req.cookies.jwt;
+router.get("/turnosCargados",isAdmin, async (req, res) => {  
+
     
+    try {
+        const [rows] = await pool.query('SELECT * FROM turnos')
+        const token = req.cookies.jwt;
+        console.log(rows);
         if (token) {
-             res.render("turnosCargados", { isAuthenticated: true });
-        } else {
-             res.render("turnosCargados", { isAuthenticated: false });
-        }
+                    // Combina todos los datos en un solo objeto
+                    res.render("turnosCargados", { isAuthenticated: true, turnos: rows });
+                } else {
+                    res.render("turnosCargados", { isAuthenticated: false, turnos: [] }); // En caso de no autenticado, turnos estará vacío
+                }
     } catch (error) {
         console.log("error");
         res.status(500).send("Error interno del servidor");  

@@ -64,35 +64,43 @@
         </nav>
       </header>
 
-    <section class="container-fluid3 text-center">
-        <div class="row">
-            <div class=" col-lg-3">
-            </div>
-            <div class="calendar col-lg-6">
-                <div class="calendar-header">
-                    <button id="prevMonth">← Anterior</button>
-                    <h2 id="monthYear"></h2>
-                    <button id="nextMonth">Siguiente →</button>
-                </div>
-                <table>
+
+
+
+      <section class="container-fluid text-center ">
+        <div class="row ">
+            <div class=" col-lg-3"></div>
+            <div class=" col-lg-6">
+                <table class="table ">
                     <thead>
-                        <tr>
-                            <th>Dom</th>
-                            <th>Lun</th>
-                            <th>Mar</th>
-                            <th>Mié</th>
-                            <th>Jue</th>
-                            <th>Vie</th>
-                            <th>Sáb</th>
+                        <tr class="text-nowrap">
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Paciente</th>
+                            <th scope="col">Servicio</th>
+                            <th scope="col">Profesional</th>
+                            <th scope="col">Pago</th>
                         </tr>
                     </thead>
-                    <tbody id="calendarBody">
-                        <!-- Aquí se cargarán los días del calendario -->
+                    <tbody>
+                        <% if (turnos.length > 0) { %>
+                            <% turnos.forEach(turno => { %>
+                                <tr>
+                                    <td><%= turno.fecha %></td>
+                                    <td><%= turno.nombre_usuario %></td>
+                                    <td><%= turno.servicio %></td>
+                                    <td><%= turno.profesional %></td>
+                                    <td><%= turno.pago %></td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6">No hay turnos disponibles</td>
+                            </tr>
+                        <% } %>
                     </tbody>
                 </table>
             </div>
-            <div class=" col-lg-3">
-            </div>
+            <div class=" col-lg-3"></div>
         </div>
     </section>
 
