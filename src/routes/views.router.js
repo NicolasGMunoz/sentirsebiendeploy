@@ -215,9 +215,9 @@ router.post('/turnos', async (req, res) => {
         const token = req.cookies.jwt;
     
         if (token) {
-             res.render("aboutus", { isAuthenticated: true });
+             res.render("aboutUs", { isAuthenticated: true });
         } else {
-             res.render("aboutus", { isAuthenticated: false });
+             res.render("aboutUs", { isAuthenticated: false });
         }
     } catch (error) {
         console.log("error");
