@@ -226,6 +226,16 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.colorFondo{
+  background-color: #2b5444;
+  color:rgb(232, 235, 233);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra opcional para resaltar */
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: justify;
+  padding-top: 5px;
+}
 
 /*aboutUs*/
 
