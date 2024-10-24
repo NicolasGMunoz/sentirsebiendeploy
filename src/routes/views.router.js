@@ -188,9 +188,12 @@ router.get("/turnos",isAuthenticated, async (req, res) => {  // Agregué `req` c
         res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
     }
 });
+
 router.post('/turnos', async (req, res) => {
     const { fechayhora, servicio, nombre, profesional } = req.body;
 
+    console.log(fechayhora, servicio, nombre, profesional);
+    
     if(!nombre || !servicio || !fechayhora || !profesional){
       return res.status(400).send('Faltan campos');
     }
@@ -277,7 +280,7 @@ router.get("/turnosCargados",isAdmin,(req, res) => {
     }
 });
 
-
+//pagos
 router.get("/pagos",(req, res) => {  // Agregué `req` como primer parámetro
     try {
         const token = req.cookies.jwt;
