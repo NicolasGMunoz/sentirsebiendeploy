@@ -8,11 +8,14 @@ import dotenv from "dotenv";
 import {promisify} from "util";
 import { isAuthenticated, isAdmin  } from "../manager/userManager.js";
 import { pool } from "../db/poolConfig.js"; 
+import PagosManager from '../manager/pagosManager.js'
+import { log } from "console";
 
 const router = Router()
 const userManager = new UserManager();
 const comentarioManager = new ComentarioManager();
 const turnosManager = new TurnosManager();
+const pagosManager = new PagosManager();
 dotenv.config()
 
 
@@ -133,8 +136,6 @@ router.post('/notices', async(req,res)=>{
         console.log(error);
         res.status(500).send("Error interno"); 
     }});
-
-
 
 //register
 router.get("/register",(req, res) => {  // Agregué `req` como primer parámetro
@@ -266,27 +267,61 @@ router.get("/services",(req, res) => {  // Agregué `req` como primer parámetro
 
 
 //turnosCargados
-router.get("/turnosCargados",isAdmin, async (req, res) => {  
-
-    
+router.get("/turnosCargados", isAuthenticated, async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM turnos')
+        const admin = await isAdmin(req); 
+        const [rows] = await pool.query('SELECT * FROM turnos');  
         const token = req.cookies.jwt;
-        console.log(rows);
-        if (token) {
-                    // Combina todos los datos en un solo objeto
-                    res.render("turnosCargados", { isAuthenticated: true, turnos: rows });
-                } else {
-                    res.render("turnosCargados", { isAuthenticated: false, turnos: [] }); // En caso de no autenticado, turnos estará vacío
-                }
+        if (admin) {
+            res.render("turnosCargados", { isAuthenticated: !!token, turnos: rows });
+        } else {
+            res.render("turnosCargados", { isAuthenticated: !!token, turnos: [] });
+        }
     } catch (error) {
-        console.log("error");
-        res.status(500).send("Error interno del servidor");  
+        console.error("Error:", error);
+        res.status(500).send("Error interno del servidor");
     }
 });
 
+// router.get("/turnosCargados",isAdmin, async (req, res) => {  
+//     if (isAdmin) {
+//         try {
+//             const [rows] = await pool.query('SELECT * FROM turnos')
+//             const token = req.cookies.jwt;
+//             console.log(rows);
+//             if (token) {
+//                         // Combina todos los datos en un solo objeto
+//                         res.render("turnosCargados", { isAuthenticated: true, turnos: rows });
+//                     } else {
+//                         res.render("turnosCargados", { isAuthenticated: false, turnos: [] }); // En caso de no autenticado, turnos estará vacío
+//                     }
+//         } catch (error) {
+//             console.log("error");
+//             res.status(500).send("Error interno del servidor");  
+//         }
+//     }else{
+//         try {
+//             const [rows] = await pool.query('SELECT * FROM turnos')
+//             const token = req.cookies.jwt;
+//             console.log(rows);
+//             if (token) {
+//                         // Combina todos los datos en un solo objeto
+//                         res.render("turnosCargados", { isAuthenticated: true, turnos: rows });
+//                     } else {
+//                         res.render("turnosCargados", { isAuthenticated: false, turnos: [] }); // En caso de no autenticado, turnos estará vacío
+//                     }
+//         } catch (error) {
+//             console.log("error");
+//             res.status(500).send("Error interno del servidor");  
+//         }
+//     }
+
+// });
+
 //pagos
-router.get("/pagos",(req, res) => {  // Agregué `req` como primer parámetro
+router.get("/pagos",async (req, res) => {  
+    const [rows] = await pagosManager.getPagos();
+    console.log(rows);
     try {
         const token = req.cookies.jwt;
     
@@ -297,11 +332,11 @@ router.get("/pagos",(req, res) => {  // Agregué `req` como primer parámetro
         }
     } catch (error) {
         console.log("error");
-        res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
+        res.status(500).send("Error interno del servidor");  
     }
 });
 
-router.post("/pagos",(req, res) => {  // Agregué `req` como primer parámetro
+router.post("/pagos",(req, res) => {  
     try {
         const token = req.cookies.jwt;
     
