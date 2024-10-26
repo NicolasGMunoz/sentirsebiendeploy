@@ -70,76 +70,83 @@
         </nav>
     </header>
 
-    <section class=" text-center registro-container">
-        <h2>Pagos Seguros</h2>
-        <form id="pagoForm" class=" container-fluid">
-            <div class="row">
+    <section class="text-center registro-container">
+
+        <form id="pagoForm" class="container-fluid formPagos">
+            <h2 class="julianAlvarez">Pagos Seguros</h2>
+            <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <label for="nombreTarjeta" class="text-center">Nombre Completo</label>
                     <input type="text" id="nombreTarjeta" name="nombreTarjeta" required>
+                    
                     <label for="expiry-month" class="text-center">Vencimiento</label>
                     <div class="row">
-                        <div class="col-lg-3"></div>
                         <div class="col-lg-6">
-                            <div class="expiry-container">
-                                <select id="expiry-month" name="expiry-month">
-                                    <option value="">MM</option>
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                                <select id="expiry-year" name="expiry-year">
-                                    <option value="">YYYY</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2027</option>
-                                    <option value="2026">2028</option>
-                                    <option value="2026">2029</option>
-                                    <option value="2026">2030</option>
-                                </select>
-                            </div>
+                            <select id="expiry-month" name="expiry-month">
+                                <option value="">MM</option>
+                                <!-- Meses de 01 a 12 -->
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
                         </div>
-                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                            <select id="expiry-year" name="expiry-year">
+                                <option value="">YYYY</option>
+                                <!-- Años de 2024 a 2030 -->
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                        </div>
                     </div>
+    
+                    <label for="cardType" class="text-center">Tarjeta</label>
+                    <select id="cardType" name="cardType" onchange="updatePaymentOptions()">
+                        <option value="">Seleccionar tipo de tarjeta</option>
+                        <option value="Débito">Débito</option>
+                        <option value="Crédito">Crédito</option>
+                    </select>
                 </div>
+    
                 <div class="col-lg-6">
                     <label for="numeroTarjeta" class="text-center">Número de Tarjeta</label>
-                    <input type="text" id="numeroTarjeta" name="numeroTarjeta" required>
+                    <input type="text" id="numeroTarjeta" name="numeroTarjeta" minlength="16" maxlength="16" pattern="\d{16}" required>
+    
                     <label for="codigoSeguridad" class="text-center">CVV</label>
-                        <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-6">
-                                <div class="expiry-container">
-                                    <input type="password" id="codigoSeguridad" name="codigoSeguridad" minlength="3" maxlength="3"
-                                    pattern="\d{3}" title="Debe tener exactamente 3 números" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-3"></div>
-                        </div>
+                    <input type="password" id="codigoSeguridad" name="codigoSeguridad" minlength="3" maxlength="3" pattern="\d{3}" title="Debe tener exactamente 3 números" required>
+                    
+                    <label for="paymentOptions" class="text-center">Pago</label>
+                    <select id="paymentOptions" name="paymentOptions">
+                        <!-- Las opciones de pago se actualizan automáticamente -->
+                    </select>
+                    
+                    
                 </div>
             </div>
-
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-
-            <label for="confirmPassword">Confirmar Contraseña:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
-
-            <button type="submit">Registrarse</button>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4"></div>
+            <div class="col-lg-4"><button type="submit" class="btn btn-primary mt-3">Pagar</button></div>
+            <div class="col-lg-4"></div>
+                </div>
+            </div>
+            
         </form>
     </section>
-
-
-
 
 
 
@@ -171,7 +178,7 @@
         </div>
     </footer>
     <!-- Mi Js -->
-    <script src="/js/register.js"></script>
+    <script src="/js/pagos.js"></script>
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
