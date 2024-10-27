@@ -71,12 +71,21 @@
     <input type="time" id="hora" name="hora" required><br><br>
 
     <label for="servicio">Servicio:</label>
+    <!-- <select id="servicio" name="servicio" required>
+      <option value="servicio1">Belleza</option>
+      <option value="servicio2">Masaje</option>
+      <option value="servucio3">Tratamientos Corporales</option>
+      <option value="ojayioo">Tratamientos Faciales</option>
+    </select><br><br>-->
     <select id="servicio" name="servicio" required>
-      <option value="belleza">Belleza</option>
-      <option value="masaje">Masaje</option>
-      <option value="corporales">Tratamientos Corporales</option>
-      <option value="faciales">Tratamientos Faciales</option>
+      <% servicios.forEach(servicio => { %>
+        <option value="<%= servicio.numServicio%>" data-precio="<%=servicio.precio%>">
+          <%=servicio.nombre%>
+        </option>
+      <% }) %>
     </select><br><br>
+    <label for="precio">Precio:</label>
+    <input type="text" id="precio" name="precio" readonly><br><br>
     <label for="profesional">Nombre Profesional:</label>
     <select id="profesional" name="profesional">
       <option value="Dra. Ana Felicidad">Dra. Felicidad</option>
@@ -84,10 +93,36 @@
       <option value="Dr. Pablo Sanchez">Dr. Pablo</option>
     </select>
     <label for="nombre">Nombre Completo:</label>
-    <input type="text" id="nombre" name="nombre" required><br><br>
+    <input type="text" id="nombre" name="nombre" value="<%= user.nombre %>" required><br><br>
 
     <button type="submit"> Agendar Turno</button>
   </form>
+
+
+
+
+
+
+
+  <script>
+    // Obtener el campo de selección de servicios y el campo de precio
+    const selectServicio = document.getElementById("servicio");
+    const inputPrecio = document.getElementById("precio");
+
+    // Añadir un evento para detectar cuando se cambia la selección de servicio
+    selectServicio.addEventListener("change", function() {
+        // Obtener el precio del servicio seleccionado (usando el atributo data-precio)
+        const precio = selectServicio.options[selectServicio.selectedIndex].getAttribute("data-precio");
+        
+        // Actualizar el campo de precio con el valor correspondiente
+        inputPrecio.value = precio ? precio : ""; // Mostrar el precio o vacío si no hay precio
+    });
+
+    // Disparar el evento al cargar la página para mostrar el precio inicial si ya hay un servicio seleccionado
+    selectServicio.dispatchEvent(new Event('change'));
+</script>
+
+
 
 
  <!-- footer -->

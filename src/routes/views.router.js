@@ -2,20 +2,23 @@ import { Router } from "express";
 import UserManager from "../manager/userManager.js";
 import ComentarioManager from "../manager/comentarioManager.js";
 import TurnosManager from "../manager/turnosManager.js"
+import { isAuthenticated, isAdmin  } from "../manager/userManager.js";
+import PagosManager from '../manager/pagosManager.js'
+import ServicioManager from '../manager/serviciosManager.js';
 import { __dirname } from "../utils.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import {promisify} from "util";
-import { isAuthenticated, isAdmin  } from "../manager/userManager.js";
 import { pool } from "../db/poolConfig.js"; 
-import PagosManager from '../manager/pagosManager.js'
-import { log } from "console";
+
+
 
 const router = Router()
 const userManager = new UserManager();
 const comentarioManager = new ComentarioManager();
 const turnosManager = new TurnosManager();
 const pagosManager = new PagosManager();
+const serviciosManager = new ServicioManager();
 dotenv.config()
 
 
@@ -178,9 +181,11 @@ router.post("/register", async (req,res) =>{
 router.get("/turnos",isAuthenticated, async (req, res) => {  // Agregué `req` como primer parámetro
     try {
         const token = req.cookies.jwt;
+        const user = await userManager.getUserById(req)
+        const servicios =  await serviciosManager.getServicios();
     
         if (token) {
-            await res.render("turnos", { isAuthenticated: true });
+            await res.render("turnos", { isAuthenticated: true, user:user, servicios:servicios });
         } else {
             await res.render("turnos", { isAuthenticated: false });
         }
@@ -192,20 +197,23 @@ router.get("/turnos",isAuthenticated, async (req, res) => {  // Agregué `req` c
 });
 
 router.post('/turnos', async (req, res) => {
-    const { fechayhora, servicio, nombre, profesional } = req.body;
-
-    console.log(fechayhora, servicio, nombre, profesional);
-    
+    const { fechayhora, servicio, nombre, profesional, precio,fechalimite } = req.body;
     if(!nombre || !servicio || !fechayhora || !profesional){
       return res.status(400).send('Faltan campos');
     }
     try {
+        const token = req.cookies.jwt;
+        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRETO);  // Aquí obtenemos el ID del usuario directamente
+        const userID = decoded.id;
       const existingTurno = await turnosManager.getTurnosporFecha(fechayhora)
       if(existingTurno)
         { return res.status(400).json({success:false, message: "El turno ya está registrado"})}
 
+
+        console.log({precio,nombre,userID,servicio,profesional})
     await turnosManager.addTurno({nombre, fechayhora, servicio, profesional})
-    res.json({success:true, message: "Turno agregado con éxito"})
+    await pagosManager.addPago({monto: precio,nombrecliente: nombre,fecha: fechayhora,mediodepago:'pendiente', estado:'pendiente',fechalimite,id_usuario: userID,servicio,profesional})
+    res.json({success:true, message: "Pago pendiente agregado con éxito"})
     } catch (error) {
       console.log("Error al intentar agregar turno", error)
       res.status(500).send("Error interno del servidor")
@@ -271,11 +279,12 @@ router.get("/turnosCargados", isAuthenticated, async (req, res) => {
     try {
         const admin = await isAdmin(req); 
         const [rows] = await pool.query('SELECT * FROM turnos');  
+        const pagospendientes = await pagosManager.getPagosPendientesPorIdUsuario(req)
         const token = req.cookies.jwt;
         if (admin) {
-            res.render("turnosCargados", { isAuthenticated: !!token, turnos: rows });
+            res.render("turnosCargados", { isAuthenticated: !!token, turnos: rows, admin:admin });
         } else {
-            res.render("turnosCargados", { isAuthenticated: !!token, turnos: [] });
+            res.render("turnosCargados", { isAuthenticated: !!token, turnos: pagospendientes, admin: admin });
         }
     } catch (error) {
         console.error("Error:", error);

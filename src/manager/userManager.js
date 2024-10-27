@@ -20,13 +20,24 @@ export default class UserManager {
 
     async getUserByUser(username) {
         try {
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE user = ?', [username]);
+            const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE user = ?', [decoded]);
             return rows[0];
         } catch (error) {
             console.error("Error al buscar el usuario por nombre:", error);
         }
     }
 
+    async getUserById(req) {
+        try {
+            const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE idusuario = ?', [decoded.id]);
+            return rows[0];
+        } catch (error) {
+            console.error("Error al buscar el usuario por ID:", error);
+        }
+    }
+    
     async getUserByEmail(email) {
         try {
             const [rows] = await pool.query('SELECT * FROM usuarios WHERE correo = ?', [email]);

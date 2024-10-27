@@ -1,4 +1,6 @@
 import { pool } from "../db/poolConfig.js";
+import jwt from "jsonwebtoken";
+import {promisify} from "util";
 
 export default class PagosManager{
     constructor(){
@@ -15,9 +17,10 @@ export default class PagosManager{
         }
     }
 
-    async getPagosPendientesPorIdUsuario(id_usuario){
+    async getPagosPendientesPorIdUsuario(req){
         try {
-            const[rows] = await pool.query('SELECT * FROM pagos WHERE estado = ? AND id_usuario =?' , ['pendiente',id_usuario] )
+            const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO);
+            const[rows] = await pool.query('SELECT * FROM pagos WHERE estado = ? AND id_usuario =?' , ['pendiente',decoded.id] )
             return rows
         } catch (error) {
             console.error(error);
@@ -34,17 +37,16 @@ export default class PagosManager{
         }
     }
 
-    async addPago(monto, nombrecliente, mediodepago, estado, id_usuario, servicio, profesional) {
+    async addPago({monto, nombrecliente,fecha, mediodepago = "pendiente", estado = "pendiente", id_usuario,fechalimite, servicio, profesional}) {
         try {
-            // Consulta SQL con placeholders para los valores
             const QUERY = `
                 INSERT INTO pagos 
-                (monto, nombrecliente, mediodepago, estado, id_usuario, servicio, profesional) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                (monto, nombrecliente,fecha, mediodepago, estado, id_usuario,fechalimite, servicio, profesional) 
+                VALUES (?, ?, ?, ?, ?, ?, ?,?, ?)
             `;
     
             // Ejecutamos la consulta y pasamos los parámetros como un array
-            const result = await pool.query(QUERY, [monto, nombrecliente, mediodepago, estado, id_usuario, servicio, profesional]);
+            const result = await pool.query(QUERY, [monto, nombrecliente, fecha, mediodepago, estado, id_usuario,fechalimite, servicio, profesional]);
     
             // Verificar si la inserción fue exitosa
             if (result[0].affectedRows > 0) {

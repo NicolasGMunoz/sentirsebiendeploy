@@ -86,10 +86,10 @@
                             <% turnos.forEach(turno => { %>
                                 <tr>
                                     <td><%= turno.fecha %></td>
-                                    <td><%= turno.nombre_usuario %></td>
+                                    <td><%= admin ? turno.nombre_usuario : turno.nombrecliente %></td>
                                     <td><%= turno.servicio %></td>
                                     <td><%= turno.profesional %></td>
-                                    <td><%= turno.pago %></td>
+                                    <td><a href="./pagos"><%= admin ? '' : 'Pagar' %></a></td>
                                 </tr>
                             <% }) %>
                         <% } else { %>
