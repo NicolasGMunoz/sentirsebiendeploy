@@ -20,8 +20,7 @@ export default class UserManager {
 
     async getUserByUser(username) {
         try {
-            const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO);
-            const [rows] = await pool.query('SELECT * FROM usuarios WHERE user = ?', [decoded]);
+            const [rows] = await pool.query('SELECT * FROM usuarios WHERE user = ?', [username]);
             return rows[0];
         } catch (error) {
             console.error("Error al buscar el usuario por nombre:", error);
