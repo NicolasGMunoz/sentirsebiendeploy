@@ -40,7 +40,7 @@ document.getElementById('pagoForm').addEventListener('submit', async function (e
 
         if (data.success) {
             alert('Pago realizado con éxito');
-            window.location.href = '/';  // Redirigir después del éxito
+            window.location.href = '/turnos';  // Redirigir después del éxito
         } else {
             alert(data.message);  // Mostrar el mensaje de error
         }
