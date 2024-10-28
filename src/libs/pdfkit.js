@@ -38,11 +38,11 @@ export function buildPDF(pago, dataCallback, endCallback) {
     
         tableData.forEach(([label, value], index) => {
             doc.font('Helvetica-Bold').text(label + ':', { continued: true }).font('Helvetica').text(` ${value}`);
-            doc.moveDown(0.5);
-    
-            // === Dibujar línea separadora después de cada fila, excepto la última ===
+            doc.moveDown(0.8);
             if (index < tableData.length - 1) {
-                doc.moveTo(doc.x, doc.y).lineTo(550, doc.y).stroke();
+                doc.moveTo(40, doc.y).lineTo(550, doc.y).stroke();
+
+                doc.moveDown(0.8);
             }
         });
 
