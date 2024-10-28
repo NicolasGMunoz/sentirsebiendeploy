@@ -36,13 +36,21 @@ document.getElementById('pagoForm').addEventListener('submit', async function (e
             body: JSON.stringify({ mediodepago: mediopago }) 
         });
 
-        const data = await response.json();
 
-        if (data.success) {
+        if (response.ok) {
+            // El PDF se recibirá como blob (binario)
+            const blob = await response.blob();
+
+            // Crear un enlace temporal para descargar el archivo
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `pago_${numeropago}.pdf`;
+            link.click();  // Hacer clic automáticamente para iniciar la descarga
+
             alert('Pago realizado con éxito');
-            window.location.href = '/turnos';  // Redirigir después del éxito
+            window.location.href = '/turnosCargados';  // Redirigir después del éxito
         } else {
-            alert(data.message);  // Mostrar el mensaje de error
+            alert('No se pudo realizar el pago');
         }
     } catch (error) {
         console.error('Error:', error);

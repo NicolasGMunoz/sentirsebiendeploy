@@ -195,8 +195,6 @@ router.post('/turnos', async (req, res) => {
         const existingTurno = await turnosManager.getTurnosporFecha(fechayhora)
         if (existingTurno) { return res.status(400).json({ success: false, message: "El turno ya está registrado" }) }
 
-
-        console.log({ precio, nombre, userID, servicio, profesional })
         await turnosManager.addTurno({ nombre, fechayhora, servicio, profesional })
         await pagosManager.addPago({ monto: precio, nombrecliente: nombre, fecha: fechayhora, mediodepago: 'pendiente', estado: 'pendiente', fechalimite, id_usuario: userID, servicio, profesional })
         res.json({ success: true, message: "Pago pendiente agregado con éxito" })
@@ -351,32 +349,43 @@ router.get("/pago/:numeropago", async (req, res) => {
 //     }
 // });
 
-router.post("/pago/:numeropago", async (req, res) => {
+
+router.post("/pago/:numeropago", async (req, res) => {  
     try {
         const { numeropago } = req.params;
         const { mediodepago } = req.body;
 
         // Actualizar el pago en la base de datos
-        const resultado = await pagosManager.updatePagos({ numeropago, mediodepago });
+        const [resultado] = await pagosManager.updatePagos({ numeropago, mediodepago });
 
-        
-            // Después de actualizar el pago, generar el PDF
-            const pago = await pagosManager.getPagoId(numeropago);
+        // Depurar: Imprimir el resultado de la consulta
+        console.log("Resultado de la actualización:", resultado);
 
-            // Generar y enviar el PDF como respuesta
-            const stream = res.writeHead(200, {
-                "Content-Type": "application/pdf",
-                "Content-Disposition": `attachment; filename=pago_${numeropago}.pdf`
-            });
+        // Verificar si la actualización afectó alguna fila
+        if (resultado.chagedRows > 0) {
+            return res.status(400).json({ success: false, message: "No se pudo realizar el pago" });
+        } else {
+             // Obtener los datos del pago actualizado
+             const pago = await pagosManager.getPagoId(numeropago);
 
-            // Llamamos a la función que construye el PDF
-            buildPDF(pago, (chunk) => stream.write(chunk), () => stream.end());
-        
+             // Configurar los encabezados para el archivo PDF
+             const stream = res.writeHead(200, {
+                 "Content-Type": "application/pdf",
+                 "Content-Disposition": `attachment; filename=pago_${numeropago}.pdf`
+             });
+ 
+             // Llamar a la función que construye el PDF
+             buildPDF(pago, (chunk) => stream.write(chunk), () => stream.end());
+            
+        }
     } catch (error) {
-        console.log("Error al intentar realizar el pago", error);
+        console.log("Error al intentar realizar el pago y generar el PDF:", error);
         res.status(500).send("Error interno del servidor");
     }
 });
+
+
+
 
 router.get('/test-pdf', (req, res) => {
     const stream = res.writeHead(200, {
