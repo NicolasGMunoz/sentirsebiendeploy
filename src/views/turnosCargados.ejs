@@ -78,7 +78,9 @@
                             <th scope="col">Paciente</th>
                             <th scope="col">Servicio</th>
                             <th scope="col">Profesional</th>
+                            <% if (!admin) { %>
                             <th scope="col">Pago</th>
+                            <% } %>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,8 +91,15 @@
                                     <td><%= admin ? turno.nombre_usuario : turno.nombrecliente %></td>
                                     <td><%= turno.servicio %></td>
                                     <td><%= turno.profesional %></td>
-                                    <td><a href="./pagos"><%= admin ? '' : 'Pagar' %></a></td>
-                                </tr>
+                                    <td><%= turno.monto %></td>
+                                    <% if (!admin) { %>
+                                      <td>
+                                          <a href="/pago/<%= turno.numeropago %>" class="btn">
+                                              Pagar
+                                          </a>
+                                      </td>
+                                  <% } %>
+                                  
                             <% }) %>
                         <% } else { %>
                             <tr>

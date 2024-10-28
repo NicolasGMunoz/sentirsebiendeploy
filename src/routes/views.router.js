@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import {promisify} from "util";
 import { pool } from "../db/poolConfig.js"; 
-
+import { buildPDF } from "../libs/pdfkit.js"
 
 
 const router = Router()
@@ -328,35 +328,39 @@ router.get("/turnosCargados", isAuthenticated, async (req, res) => {
 // });
 
 //pagos
-router.get("/pagos",async (req, res) => {  
-    const [rows] = await pagosManager.getPagos();
-    console.log(rows);
-    try {
-        const token = req.cookies.jwt;
+router.get("/pago/:numeropago",async (req, res) => {  
+    try{
+    const {numeropago} = req.params;
+    const pago = await pagosManager.getPagoId(numeropago)  
     
-        if (token) {
-             res.render("pagos", { isAuthenticated: true });
-        } else {
-             res.render("pagos", { isAuthenticated: false });
-        }
-    } catch (error) {
-        console.log("error");
-        res.status(500).send("Error interno del servidor");  
+    if (!pago) {
+        return res.status(404).send('Pago no encontrado');
     }
-});
 
-router.post("/pagos",(req, res) => {  
+    // Renderizar la vista con el pago encontrado
+    res.render("pagos", { isAuthenticated: true, pago: pago });
+} catch (error) {
+    console.error("Error al obtener el pago:", error);
+    res.status(500).send("Error interno del servidor");
+
+}});
+
+router.post("/pago/:numeropago", async (req, res) => {  
     try {
-        const token = req.cookies.jwt;
-    
-        if (token) {
-             res.render("pagos", { isAuthenticated: true });
+        const { numeropago } = req.params;
+        const { mediodepago } = req.body;
+
+        // Actualizar el pago en la base de datos
+        const resultado = await pagosManager.updatePagos({ numeropago, mediodepago });
+
+        if (resultado.affectedRows > 0) {
+            return res.json({ success: true, message: "Pago realizado con éxito" });
         } else {
-             res.render("pagos", { isAuthenticated: false });
+            return res.status(400).json({ success: true, message: "Pago no realizado" });
         }
     } catch (error) {
-        console.log("error");
-        res.status(500).send("Error interno del servidor");  // Agregué un mensaje de error
+        console.log("Error al intentar actualizar el pago:", error);
+        res.status(500).send("Error interno del servidor");
     }
 });
 

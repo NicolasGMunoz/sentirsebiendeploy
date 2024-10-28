@@ -17,6 +17,16 @@ export default class PagosManager{
         }
     }
 
+    async getPagoId(id){
+        try {
+            const[rows] = await pool.query('SELECT * FROM pagos WHERE numeropago = ?', id);
+            return rows[0];
+            } catch (error) {
+                console.error("Error buscando el pago con id:", id, error);
+                return null;
+                }
+    }
+    
     async getPagosPendientesPorIdUsuario(req){
         try {
             const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRETO);
@@ -59,5 +69,16 @@ export default class PagosManager{
             return { success: false, message: 'Error al agregar el pago', error };
         }
     }
-    
+    async updatePagos({numeropago,mediodepago}){
+        try {
+            const QUERY = `
+                UPDATE pagos
+                SET mediodepago = ?, estado = ?
+                WHERE numeropago = ?
+            `;
+        const result = await pool.query(QUERY,[mediodepago, "pagado", numeropago])
+        return result;
+    } catch(e){
+        console.error("No se pudo cargar el pago", e);
+    }}
 }

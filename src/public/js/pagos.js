@@ -2,6 +2,7 @@ function updatePaymentOptions() {
     const paymentOptions = document.getElementById("paymentOptions");
     paymentOptions.innerHTML = ""; // Limpiar opciones
 
+    
     const cardType = document.getElementById("cardType").value;
     
     if (cardType === "Crédito") {
@@ -21,3 +22,30 @@ function updatePaymentOptions() {
         paymentOptions.appendChild(option1);
     }
 }
+
+document.getElementById('pagoForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); 
+    const mediopago = document.getElementById('cardType').value;
+    const numeropago = document.getElementById('numeropago').value;
+    try {
+        const response = await fetch(`/pago/${numeropago}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mediodepago: mediopago }) 
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Pago realizado con éxito');
+            window.location.href = '/';  // Redirigir después del éxito
+        } else {
+            alert(data.message);  // Mostrar el mensaje de error
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un problema al intentar pagar.');
+    }
+});

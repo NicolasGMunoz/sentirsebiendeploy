@@ -34,28 +34,28 @@
                 <div class="collapse navbar-collapse cabecera" id="navbarNavDropdown">
                     <ul class="navbar-nav cabecera">
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./">Inicio</a>
+                            <a class="nav-link cabecera he" href="../">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./services">Servicios</a>
+                            <a class="nav-link cabecera he" href="../services">Servicios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./aboutUs">Quienes Somos</a>
+                            <a class="nav-link cabecera he" href="../aboutUs">Quienes Somos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./notices">Noticias</a>
+                            <a class="nav-link cabecera he" href="../notices">Noticias</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./employedForm">Empleo</a>
+                            <a class="nav-link cabecera he" href="../employedForm">Empleo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./turnos">Turnos</a>
+                            <a class="nav-link cabecera he" href="../turnos">Turnos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he" href="./turnosCargados">Turnos Agendados</a>
+                            <a class="nav-link cabecera he" href="../turnosCargados">Turnos Agendados</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link cabecera he he2" href="./pagos">Pagos</a>
+                            <a class="nav-link cabecera he he2" href="../pagos">Pagos</a>
                         </li>
                         <li class="nav-item">
                             <button class="styleButtonHead">
@@ -75,6 +75,9 @@
         <form id="pagoForm" class="container-fluid formPagos">
             <h2 class="julianAlvarez">Pagos Seguros</h2>
             <div class="row justify-content-center">
+                <input type="hidden" id="numeropago" value="<%= pago.numeropago %>">
+                <div><h4>Monto a pagar: $ <%= pago.monto %></h4></div>
+
                 <div class="col-lg-6">
                     <label for="nombreTarjeta" class="text-center">Nombre Completo</label>
                     <input type="text" id="nombreTarjeta" name="nombreTarjeta" required>
